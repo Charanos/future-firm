@@ -149,6 +149,7 @@ export default function PackagesPageContent() {
                                                     {pkg.status}
                                                 </Badge>
                                             </TableCell>
+
                                             <TableCell>
                                                 <Button
                                                     variant="ghost"
