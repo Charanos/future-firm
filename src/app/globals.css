@@ -1,0 +1,239 @@
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-heading: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+
+    to {
+      height: 0;
+    }
+  }
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+
+  @media (width >=--theme(--breakpoint-sm)) {
+    max-width: none;
+  }
+
+  @media (width >=1400px) {
+    max-width: 1400px;
+  }
+}
+
+/* Custom Scrollbar - Global Application */
+@media (min-width: 640px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 99px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--primary) / 0.3) hsl(var(--secondary) / 0.1);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to sure everything still looks
+  correct.
+*/
+@layer base {
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@layer base {
+
+  /* Remove default card borders for a cleaner look */
+  .card-soft {
+    @apply border-none shadow-md bg-card/50 backdrop-blur-sm;
+  }
+
+  :root {
+    /* Future Optics Light Theme */
+    --background: 210 40% 98%;
+    /* Gray 50/100ish */
+    --foreground: 222 47% 11%;
+
+    /* Primary: Light Blue 500 (#03a9f4) -> HSL: 199 98% 48% */
+    --primary: 199 98% 48%;
+    --primary-foreground: 210 40% 98%;
+
+    /* Secondary: Blue 700 (#1976d2) -> HSL: 210 79% 46% */
+    --secondary: 210 79% 46%;
+    --secondary-foreground: 210 40% 98%;
+
+    /* Cards: White */
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    /* Popovers: White */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Muted: Gray 100 */
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    /* Accent: Light Blue 100 */
+    --accent: 199 98% 95%;
+    --accent-foreground: 222 47% 11%;
+
+    /* Destructive: Red 500 */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Border: Gray 200 */
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 199 98% 48%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Future Optics Dark Theme */
+    /* Background: Gray 950 (#030712) -> HSL: 224 71% 4% */
+    --background: 224 71% 4%;
+    --foreground: 210 40% 98%;
+
+    /* Primary: Light Blue 400 (#29b6f6) -> HSL: 198 93% 56% */
+    --primary: 198 93% 56%;
+    --primary-foreground: 222 47% 11%;
+
+    /* Secondary: Blue 800 */
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    /* Cards: Gray 900 (#111827) with slight transparency/blur vibe allowed */
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+
+    /* Popovers: Gray 900 */
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Muted: Gray 800 */
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    /* Accent: Gray 800 */
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    /* Destructive: Red 900 */
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Border: Gray 800 */
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 198 93% 56%;
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+
+  /* Apply Montserrat to headings and numbers */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .font-heading {
+    font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* Number-specific styling */
+  .font-numbers {
+    font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Bordered theme variant - activated via data-bordered attribute */
+[data-bordered="true"] .rounded-\[24px\] {
+  border: 1px solid hsl(var(--border) / 0.6);
+}
