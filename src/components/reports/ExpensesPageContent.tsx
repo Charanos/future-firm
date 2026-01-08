@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Plus, Eye, PenSq, Trash2, FileText, DollarSign } from "lucide-react";
+import { ArrowLeft, Plus, Eye, Pen, Trash2, FileText, DollarSign } from "lucide-react";
 import { CreateExpenseModal } from "@/components/modals/CreateExpenseModal";
 import { SearchFilterBar } from "@/components/ui/search-filter-bar";
 import { StatsCard } from "@/components/ui/stats-card";
