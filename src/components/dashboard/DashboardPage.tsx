@@ -35,6 +35,8 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  Line,
+  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -42,6 +44,7 @@ import {
 } from "recharts";
 
 import {
+  ArrowDownRight,
   ArrowUpRight,
   ChevronDown,
   LayoutGrid,
@@ -100,6 +103,15 @@ const entriesData = [
   { name: "16", value: 22 },
   { name: "20", value: 35 },
   { name: "23", value: 16 },
+];
+
+const sidebarDailyData = [
+  { name: "04", value: 8 },
+  { name: "05", value: 18 },
+  { name: "06", value: 12 },
+  { name: "07", value: 28 },
+  { name: "08", value: 22 },
+  { name: "09", value: 14 },
 ];
 
 const packageRows = [
@@ -254,8 +266,8 @@ export default function DashboardPage() {
                         </span>
                       </div>
 
-                      <h1 className="text-4xl md:text-4.5xl font-semibold text-foreground tracking-tight">
-                        Welcome Back, <span className="text-primary">FUTURE OPTICS!</span>
+                      <h1 className="text-3xl md:text-4.5xl font-medium text-foreground tracking-tight">
+                        Welcome Back, <span className="text-primary font-semibold">FUTURE OPTICS!</span>
                       </h1>
 
                       <p className="text-muted-foreground text-sm md:text-base mt-2">
@@ -287,11 +299,11 @@ export default function DashboardPage() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="col-span-2 bg-muted/40 backdrop-blur-md rounded-2xl p-5 border border-border/40 hover:bg-muted/60 transition-colors">
+                    <div className="col-span-2 bg-muted/40 backdrop-blur-md rounded-2xl p-4 border border-border/40 hover:bg-muted/60 transition-colors">
                       <div className="flex items-start justify-between mb-2">
                         <div>
                           <p className="text-muted-foreground text-sm font-medium">Today's Income</p>
-                          <div className="text-4xl font-semibold text-foreground mt-1">{formatKsh(incomeToday)}</div>
+                          <div className="text-3xl md:text-4xl font-semibold text-foreground mt-1">{formatKsh(incomeToday)}</div>
                         </div>
                         <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
                           <TrendingUp className="h-6 w-6 text-primary" />
@@ -352,21 +364,37 @@ export default function DashboardPage() {
                 {/* Client Statistics Grid */}
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {[
-                    { label: "Total Users", value: 839, icon: Users, color: "text-indigo-500", bg: "bg-indigo-500/10" },
-                    { label: "Active Users", value: 121, icon: CheckCircle2, color: "text-emerald-500", bg: "bg-emerald-500/10" },
-                    { label: "Expired Users", value: 121, icon: Clock, color: "text-rose-500", bg: "bg-rose-500/10" },
-                    { label: "Total Online", value: 122, icon: Wifi, color: "text-green-500", bg: "bg-green-500/10" },
-                    { label: "Online PPPoE", value: 86, icon: Network, color: "text-cyan-500", bg: "bg-cyan-500/10" },
-                    { label: "Online Hotspot", value: 36, icon: Signal, color: "text-orange-500", bg: "bg-orange-500/10" },
+                    { label: "Total Users", value: 839, icon: Users, color: "text-indigo-500", bg: "bg-indigo-500/10", border: "ring-indigo-500/20", bar: "bg-indigo-500", trend: "+12%", trendUp: true },
+                    { label: "Active Users", value: 121, icon: CheckCircle2, color: "text-emerald-500", bg: "bg-emerald-500/10", border: "ring-emerald-500/20", bar: "bg-emerald-500", trend: "+8%", trendUp: true },
+                    { label: "Expired Users", value: 121, icon: Clock, color: "text-rose-500", bg: "bg-rose-500/10", border: "ring-rose-500/20", bar: "bg-rose-500", trend: "-2%", trendUp: false },
+                    { label: "Total Online", value: 122, icon: Wifi, color: "text-green-500", bg: "bg-green-500/10", border: "ring-green-500/20", bar: "bg-green-500", trend: "+5%", trendUp: true },
+                    { label: "Online PPPoE", value: 86, icon: Network, color: "text-cyan-500", bg: "bg-cyan-500/10", border: "ring-cyan-500/20", bar: "bg-cyan-500", trend: "0%", trendUp: true },
+                    { label: "Online Hotspot", value: 36, icon: Signal, color: "text-orange-500", bg: "bg-orange-500/10", border: "ring-orange-500/20", bar: "bg-orange-500", trend: "+15%", trendUp: true },
                   ].map((stat, i) => (
-                    <Card key={i} className="rounded-2xl border-border/40 shadow-sm bg-card/80 backdrop-blur-xl hover:shadow-md transition-all duration-200">
-                      <CardContent className="p-4 flex flex-col gap-3">
-                        <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${stat.bg}`}>
-                          <stat.icon className={`h-5 w-5 ${stat.color}`} />
+                    <Card key={i} className="group relative overflow-hidden rounded-[24px] border border-border/40 bg-card/60 backdrop-blur-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300">
+                      {/* Decorative Gradient Blob */}
+                      <div className={`absolute -right-10 -top-10 h-12 w-12 rounded-full ${stat.bg} blur-3xl opacity-20 group-hover:opacity-60 transition-opacity duration-500`} />
+
+                      <CardContent className="py-1 px-4 flex flex-col justify-between h-full relative z-10">
+                        <div className="flex justify-between items-start mb-4">
+                          <div className={`h-11 w-11 rounded-2xl flex items-center justify-center ${stat.bg} ${stat.color} ring-1 ring-inset ${stat.border}`}>
+                            <stat.icon className="h-5 w-5" />
+                          </div>
+                          <div className={`flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-full ${stat.trendUp ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'}`}>
+                            {stat.trendUp ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+                            {stat.trend}
+                          </div>
                         </div>
-                        <div>
-                          <div className="text-2xl font-bold font-numbers">{stat.value}</div>
-                          <div className="text-xs text-muted-foreground font-medium uppercase tracking-wide">{stat.label}</div>
+
+                        <div className="space-y-1">
+                          <div className="text-3xl font-bold font-numbers tracking-tight text-foreground">
+                            {stat.value}
+                          </div>
+                          <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{stat.label}</div>
+                        </div>
+
+                        <div className="mt-4 h-1 w-full bg-secondary/50 rounded-full overflow-hidden">
+                          <div className={`h-full ${stat.bar} rounded-full opacity-80`} style={{ width: `${Math.random() * 40 + 40}%` }} />
                         </div>
                       </CardContent>
                     </Card>
@@ -374,43 +402,93 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Income Reports Section */}
-                <Card className="rounded-3xl border-border/40 shadow-xl bg-gradient-to-br from-card/80 via-card/50 to-card/80 backdrop-blur-xl overflow-hidden">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg font-heading">Financial Overview</CardTitle>
+                {/* Income Reports Section - Overhauled to match Right Column height */}
+                <Card className="rounded-3xl border-border/40 shadow-xl bg-gradient-to-br from-card/80 via-card/50 to-card/80 backdrop-blur-xl overflow-hidden flex flex-col min-h-[650px]">
+                  <CardHeader className="flex flex-row items-center justify-between pb-2">
+                    <div>
+                      <CardTitle className="text-lg font-heading">Financial Overview</CardTitle>
+                      <p className="text-sm text-muted-foreground">Revenue trends & performance analysis</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Tabs value={range} onValueChange={(v) => setRange(v as RangeKey)} className="w-[180px]">
+                        <TabsList className="grid w-full grid-cols-3 h-8 bg-muted/60">
+                          <TabsTrigger value="7d" className="text-xs h-6">7d</TabsTrigger>
+                          <TabsTrigger value="30d" className="text-xs h-6">30d</TabsTrigger>
+                          <TabsTrigger value="90d" className="text-xs h-6">90d</TabsTrigger>
+                        </TabsList>
+                      </Tabs>
+                    </div>
                   </CardHeader>
-                  <CardContent className="p-6 grid gap-6 md:grid-cols-3">
-                    {/* Daily Income */}
-                    <div className="p-5 rounded-2xl bg-muted/40 border border-border/30 relative overflow-hidden group">
-                      <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Daily Income</div>
-                      <div className="text-3xl font-bold font-numbers text-foreground">{formatKsh(19590)}</div>
-                      <div className="mt-2 flex items-center gap-1.5 text-xs font-medium text-emerald-500">
-                        <Badge className="bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-0 px-1.5 py-0 rounded-md">+12%</Badge>
-                        <span className="text-muted-foreground">vs yesterday</span>
+                  <CardContent className="flex-1 p-6 flex flex-col gap-6">
+                    <div className="flex items-end justify-between">
+                      <div>
+                        <div className="text-sm font-medium text-muted-foreground mb-1">Total Revenue ({range})</div>
+                        <div className="text-4xl font-bold font-numbers text-foreground tracking-tight">{formatKsh(periodIncome)}</div>
+                        <div className={`flex items-center gap-2 mt-2 text-sm font-medium ${deltaIncome >= 0 ? "text-emerald-500" : "text-rose-500"}`}>
+                          <span className={`${deltaIncome >= 0 ? "bg-emerald-500/10" : "bg-rose-500/10"} px-2 py-0.5 rounded-full`}>
+                            {deltaIncome > 0 ? "+" : ""}{deltaIncome}%
+                          </span>
+                          <span className="text-muted-foreground">vs previous period</span>
+                        </div>
+                      </div>
+                      <div className="hidden sm:block text-right">
+                        <div className="text-sm font-medium text-muted-foreground mb-1">Average Daily</div>
+                        <div className="text-2xl font-semibold font-numbers">{formatKsh(periodIncome / (range === '7d' ? 7 : range === '30d' ? 30 : 90))}</div>
                       </div>
                     </div>
 
-                    {/* Monthly Report */}
-                    <div className="p-5 rounded-2xl bg-muted/40 border border-border/30 relative overflow-hidden group">
-                      <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Monthly Report</div>
-                      <div className="text-3xl font-bold font-numbers text-foreground">{formatKsh(19590)}</div>
-                      <div className="mt-3 w-full h-10">
-                        <MiniChart data={miniChartData} />
-                      </div>
-                    </div>
-
-                    {/* Yearly Report */}
-                    <div className="p-5 rounded-2xl bg-muted/40 border border-border/30 relative overflow-hidden group">
-                      <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Yearly Report</div>
-                      <div className="text-3xl font-bold font-numbers text-foreground">{formatKsh(19590)}</div>
-                      <div className="mt-2 text-xs text-muted-foreground">Total accumulated revenue</div>
+                    <div className="w-full h-[400px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <AreaChart data={incomeSeries}>
+                          <defs>
+                            <linearGradient id="incomeMain" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
+                              <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                            </linearGradient>
+                          </defs>
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" strokeOpacity={0.4} />
+                          <XAxis
+                            dataKey="name"
+                            axisLine={false}
+                            tickLine={false}
+                            tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+                            dy={10}
+                          />
+                          <YAxis
+                            axisLine={false}
+                            tickLine={false}
+                            tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+                            tickFormatter={(value) => `Ksh${value / 1000}k`}
+                            width={60}
+                          />
+                          <Tooltip
+                            cursor={{ stroke: 'hsl(var(--muted-foreground))', strokeWidth: 1, strokeDasharray: '4 4' }}
+                            contentStyle={{
+                              borderRadius: "12px",
+                              border: "1px solid hsl(var(--border))",
+                              backgroundColor: "hsl(var(--card))",
+                              fontSize: "12px",
+                              boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
+                            }}
+                          />
+                          <Area
+                            type="monotone"
+                            dataKey="value"
+                            stroke="hsl(var(--primary))"
+                            strokeWidth={3}
+                            fill="url(#incomeMain)"
+                            activeDot={{ r: 6, strokeWidth: 0, fill: "hsl(var(--primary))" }}
+                          />
+                        </AreaChart>
+                      </ResponsiveContainer>
                     </div>
                   </CardContent>
                 </Card>
               </div>
 
               {/* Right Column: Quick Actions (4 cols) */}
-              <div className="lg:col-span-4 h-full">
-                <div className="flex flex-col gap-3 h-full">
+              <div className="lg:col-span-4 space-y-6">
+                <div className="flex flex-col gap-3">
                   {[
                     { label: "Add Client", action: () => setShowAddClientModal(true), icon: Users },
                     { label: "Reports", href: "/reports", icon: FileText },
@@ -434,6 +512,41 @@ export default function DashboardPage() {
                     </button>
                   ))}
                 </div>
+
+                {/* Daily Entries Graph - Right Column */}
+                <Card className="rounded-[24px] border-none shadow-sm bg-card text-foreground overflow-hidden">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base font-medium">Daily Entries</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pb-4">
+                    <div className="h-[400px] w-full mt-2">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={sidebarDailyData}>
+                          <CartesianGrid strokeDasharray="5 5" vertical={true} horizontal={false} stroke="hsl(var(--border))" strokeOpacity={0.6} />
+                          <XAxis
+                            dataKey="name"
+                            axisLine={false}
+                            tickLine={false}
+                            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+                            dy={10}
+                          />
+                          <Line
+                            type="linear"
+                            dataKey="value"
+                            stroke="hsl(var(--primary))"
+                            strokeWidth={2}
+                            dot={{ fill: 'hsl(var(--primary))', r: 4, strokeWidth: 0 }}
+                            activeDot={{ r: 6 }}
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <div className="flex items-center justify-between mt-4">
+                      <div className="text-2xl font-bold">22 Clients</div>
+                      <div className="text-rose-500 font-medium">--71.43%</div>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
 
@@ -923,7 +1036,7 @@ export default function DashboardPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="fixed right-6 bottom-12 z-50"
+            className="fixed right-6 bottom-24 z-50"
           >
             <Button size="lg" className="rounded-full h-14 w-14 shadow-lg" onClick={() => setCustomizerOpen(true)}>
               <PanelRightOpen className="h-5 w-5" />
